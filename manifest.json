@@ -1,0 +1,11 @@
+{
+    "name": "DataUrlGenerator",
+    "version": "1.0",
+    "description": "Data Url Generator",
+    "browser_action": {
+        "default_icon": "converter.gif"
+    },
+    "incognito": "split",
+    "background_page": "watcher.html",
+    "permissions": ["tabs"]
+}

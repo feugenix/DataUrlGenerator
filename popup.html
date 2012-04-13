@@ -1,0 +1,51 @@
+<html>
+	<head>
+		<title>Data Url Generator</title>
+	</head>
+	<body>
+		<div>
+			<label for="file">File to process:</label>
+			<input type="file" id="file" />
+		</div>
+
+		<div>
+			<label for="mime">Mime type:</label>
+			<input type="text" id="mime" autofocus="autofocus" />
+		</div>
+
+		<div>
+			<div>Result:</div>
+			<textarea id="result" style="width:500px; height:400px"></textarea>
+		</div>
+
+		<script>
+			var processFile = function(e){
+				var file = e.target.files[0],
+					mimeType = window['mime'].value || file.type;
+
+				var reader = new FileReader();
+
+				reader.onload = function(readEvt){
+					var dataUrlString = ',' + btoa(readEvt.target.result);
+
+					if (mimeType){
+						dataUrlString = mimeType + ';base64' + dataUrlString
+					}
+
+					dataUrlString = 'data:' + dataUrlString;
+
+					result.value = dataUrlString;
+				};
+
+				reader.readAsBinaryString(file);
+			};
+
+			window['file'].addEventListener('change', processFile, false);
+
+			window['result'].addEventListener('click', function(){
+				this.focus();
+				this.select();
+			});
+		</script>
+	</body>
+</html>
