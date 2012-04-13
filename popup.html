@@ -14,15 +14,21 @@
 		</div>
 
 		<div>
+			<input type="button" id="goBtn" value="Go!" />
+		</div>
+
+		<div>
 			<div>Result:</div>
 			<textarea id="result" style="width:500px; height:400px"></textarea>
 		</div>
 
 		<script>
-			var processFile = function(e){
-				var file = e.target.files[0],
-					mimeType = window['mime'].value || file.type;
+			HTMLElement.prototype.listenEvent = function(name, callback){
+				this.addEventListener(name, callback, false);
+			};
 
+			var selectedFile, mimeType;
+			var processFile = function(){
 				var reader = new FileReader();
 
 				reader.onload = function(readEvt){
@@ -37,12 +43,20 @@
 					result.value = dataUrlString;
 				};
 
-				reader.readAsBinaryString(file);
+				reader.readAsBinaryString(selectedFile);
 			};
 
-			window['file'].addEventListener('change', processFile, false);
+			window['file'].listenEvent('change', function(e){
+				selectedFile = e.target.files[0];
+			});
 
-			window['result'].addEventListener('click', function(){
+			window['mime'].listenEvent('change', function(){
+				mimeType = this.value;
+			});
+
+			window['goBtn'].listenEvent('click', processFile);
+
+			window['result'].listenEvent('click', function(){
 				this.focus();
 				this.select();
 			});
